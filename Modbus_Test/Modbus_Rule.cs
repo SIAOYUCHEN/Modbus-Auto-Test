@@ -39,9 +39,9 @@ namespace Modbus_Test
                                                                   0x0C, 0x0D, 0x0E, 0x0F, 0x10,
                                                                   0x11, 0x21, 0x02
                                                                 };
-        /*private byte[] Modbus_Reference_FunctionCode3_Address = { 0x01, 0x02, 0x1E, 0x23, 0x28,
+        private byte[] Modbus_Reference_FunctionCode3_Address = { 0x01, 0x02, 0x1E, 0x23, 0x28,
                                                                   0x29, 0x2A, 0x2D, 0x2E, 0x42
-                                                                };*/
+                                                                };
         private byte[] Modbus_Reference_FunctionCode6_Address = { 0x2A, 0x42 };
 
         public Byte[] GetTransmit()
