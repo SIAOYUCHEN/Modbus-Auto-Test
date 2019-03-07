@@ -21,7 +21,7 @@ namespace Modbus_Test
         public int Modbus_FuctionCode6 = 6;
         public int Modbus_FuctionCode16 = 16;
         public int Modbus_Error_Length = 5;
-        public int Modbus_Timeout = 40;// 34 500ms 
+        public int Modbus_Timeout = 34;// 100ms 34
 
         public int Temp_Receive_Buffer_Crc_Offest1 = 1;
         public int Temp_Receive_Buffer_Crc_Offest2 = 2;
@@ -39,16 +39,16 @@ namespace Modbus_Test
                                                                   0x0C, 0x0D, 0x0E, 0x0F, 0x10,
                                                                   0x11, 0x21, 0x02
                                                                 };
-        private byte[] Modbus_Reference_FunctionCode3_Address = { 0x01, 0x02, 0x1E, 0x23, /*0x28,*/
+        /*private byte[] Modbus_Reference_FunctionCode3_Address = { 0x01, 0x02, 0x1E, 0x23, 0x28,
                                                                   0x29, 0x2A, 0x2D, 0x2E, 0x42
-                                                                };
+                                                                };*/
         private byte[] Modbus_Reference_FunctionCode6_Address = { 0x2A, 0x42 };
 
         public Byte[] GetTransmit()
         {
             Byte[] context = new Byte[1024];
             Random data1 = new Random();
-            context[0] = Convert.ToByte(data1.Next(1,2));
+            context[0] = Convert.ToByte(data1.Next(0,1));
             if (context[0] != Modbus_BroadC0ast)
             {
                 context[1] = Modbus_Reference_FunctionCode[data1.Next(0, Modbus_Reference_FunctionCode.Length)];
