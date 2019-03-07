@@ -16,7 +16,7 @@ namespace Modbus_Test
     public partial class Form1 : Form
     {
         String[] PortNames;
-        //Byte[] buffer = { 0x01, 0x06, 0x00, 0x2A, 0x00, 0x00, 0xA8, 0x02};
+        //Byte[] buffer = { 0x01, 0x04, 0x00, 0x03, 0x00, 0x01, 0xC1, 0xCA};
         Byte[] buffer;
         Boolean Is_Need_Receive = false;
         Int32 Timeout_Count = 0;
@@ -70,7 +70,7 @@ namespace Modbus_Test
         {
             Modbus_Serial.Dispose();
             Modbus_Serial.Open();
-            buffer = modbus.GetTransmit();
+            //buffer = modbus.GetTransmit();
             Modbus_Serial.Write(buffer, 0, buffer.Length);
             Enable_Timer2();
             Is_Need_Receive = true;
@@ -93,7 +93,7 @@ namespace Modbus_Test
             Total_TextBox.AppendText(Environment.NewLine);
             Total_Times++;
             Total_Count_TextBox.Text = Total_Times.ToString();
-            Modbus_Serial.Close();
+            //Modbus_Serial.Close();
             //s.Start();//開始計時
 
         }
