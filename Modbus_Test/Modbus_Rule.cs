@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text;
 
 namespace Modbus_Test
 {
@@ -51,23 +52,12 @@ namespace Modbus_Test
             if (context[0] != Modbus_BroadC0ast)
             {
                 context[1] = Modbus_Reference_FunctionCode[data1.Next(0, Modbus_Reference_FunctionCode.Length)];
-                if (context[Modbus_FunctionCode_Index] == FuctionCode3)
-                {
-                    context[2] = 0x00;
-                    context[3] = Modbus_Reference_FunctionCode3_Address[data1.Next(0, Modbus_Reference_FunctionCode3_Address.Length)];
-                    context[4] = 0x00;
-                    context[5] = Convert.ToByte(data1.Next(0, 6));
-                    SetCrc(ref context, 6);
-                    context[6] = Convert.ToByte(crc_high);
-                    context[7] = Convert.ToByte(crc_low);
-                    Array.Resize(ref context, 8);// 傳入矩陣位址
-                }
-                else if (context[Modbus_FunctionCode_Index] == FuctionCode4)
+                if (context[Modbus_FunctionCode_Index] == FuctionCode3 || context[Modbus_FunctionCode_Index] == FuctionCode4)
                 {
                     context[2] = 0x00;
                     context[3] = Modbus_Reference_FunctionCode4_Address[data1.Next(0, Modbus_Reference_FunctionCode4_Address.Length)];
                     context[4] = 0x00;
-                    context[5] = Convert.ToByte(data1.Next(0, 6));
+                    context[5] = Convert.ToByte(data1.Next(1, 1));
                     SetCrc(ref context, 6);
                     context[6] = Convert.ToByte(crc_high);
                     context[7] = Convert.ToByte(crc_low);
