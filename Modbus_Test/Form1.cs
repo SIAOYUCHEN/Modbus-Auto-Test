@@ -70,7 +70,7 @@ namespace Modbus_Test
         {
             Modbus_Serial.Dispose();
             Modbus_Serial.Open();
-            //buffer = modbus.GetTransmit();
+            buffer = modbus.GetTransmit();
             Modbus_Serial.Write(buffer, 0, buffer.Length);
             Enable_Timer2();
             Is_Need_Receive = true;
