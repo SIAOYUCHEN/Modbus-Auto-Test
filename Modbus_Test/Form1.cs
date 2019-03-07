@@ -16,7 +16,7 @@ namespace Modbus_Test
     public partial class Form1 : Form
     {
         String[] PortNames;
-        //Byte[] buffer = { 0x00, 0x06, 0x00, 0x42, 0x00, 0x00, 0x28, 0x0F};
+        //Byte[] buffer = { 0x01, 0x06, 0x00, 0x2A, 0x00, 0x00, 0xA8, 0x02};
         Byte[] buffer;
         Boolean Is_Need_Receive = false;
         Int32 Timeout_Count = 0;
@@ -25,6 +25,7 @@ namespace Modbus_Test
         Byte[] Temp_Receive_Buffer = new Byte[1024];
         delegate void Display(Byte[] buffer);
         Modbus_Rule modbus = new Modbus_Rule();
+        Csv_File file = new Csv_File();
         private const int FuctionCode3 = 3;
         private const int FuctionCode4 = 4;
         private const int FuctionCode6 = 6;
@@ -46,6 +47,12 @@ namespace Modbus_Test
                     comboBox1.Items.Add(portname);
                 }
             }
+
+            file.dt.Columns.Add(new DataColumn("TX"));
+            file.dt.Columns.Add(new DataColumn("RX"));
+            file.dt.Columns.Add(new DataColumn("RESULT"));
+            
+            file.SaveCsv(file.dt, file.GetFileName());
         }
 
         private void Serial_Button_Click(object sender, EventArgs e)
@@ -86,7 +93,7 @@ namespace Modbus_Test
             Total_TextBox.AppendText(Environment.NewLine);
             Total_Times++;
             Total_Count_TextBox.Text = Total_Times.ToString();
-            //Modbus_Serial.Close();
+            Modbus_Serial.Close();
             //s.Start();//開始計時
 
         }
@@ -97,8 +104,6 @@ namespace Modbus_Test
 
             if (Timeout_Count == modbus.Modbus_Timeout)
             {
-                //if (Is_Need_Receive == true)
-                //{
                 if (buffer[modbus.Modbus_Id_Index] != 0)
                 {
                     TimeOut_Error_Times++;
@@ -106,19 +111,30 @@ namespace Modbus_Test
                     Error_TextBox.AppendText("Tx: ");
                     Error_TextBox.AppendText(BitConverter.ToString(buffer).Replace("-", " "));
                     Error_TextBox.AppendText(Environment.NewLine);
+
+                    DataRow dr = file.dt.NewRow();   //建立新的Rows
+                    dr["TX"] = BitConverter.ToString(buffer).Replace("-", " ");
+                    dr["RESULT"] = "FALSE";
+                    file.dt.Rows.Add(dr);
                 }
                 else
                 {
                     Correct_Times++;
                     Correct_Count_TextBox.Text = Correct_Times.ToString();
+
+                    DataRow dr = file.dt.NewRow();   //建立新的Rows
+                    dr["TX"] = BitConverter.ToString(buffer).Replace("-", " ");
+                    dr["RESULT"] = "TRUE";
+                    file.dt.Rows.Add(dr);
                 }
+
+                file.SaveCsv(file.dt, file.GetFileName());
                 Is_Need_Receive = false;
                 
-                //}
                 Clear_Timer2_Parameter();
                 //s.Stop();//開始計時
 
-                //Error_Count_TextBox.Text = ((s.ElapsedMilliseconds).ToString() + "毫秒");
+                //TimeOut_Count_TextBox.Text = ((s.ElapsedMilliseconds).ToString() + "毫秒");
                 //s.Reset();
             }
         }
@@ -169,6 +185,13 @@ namespace Modbus_Test
                          Clear_Timer2_Parameter();
                        }
                    }
+                   else
+                   {
+                        Array.Resize(ref Temp_Receive_Buffer, Temp_Receive_Length);// 傳入矩陣位址
+                        Display receive_result = new Display(Display_Error_Text);
+                        this.Invoke(receive_result, new Object[] { Temp_Receive_Buffer });
+                        Clear_Timer2_Parameter();
+                    }
                 }
             }
         }
@@ -203,6 +226,15 @@ namespace Modbus_Test
             Correct_TextBox.AppendText("Rx: ");
             Correct_TextBox.AppendText(BitConverter.ToString(Receive_Buffer).Replace("-", " "));
             Correct_TextBox.AppendText(Environment.NewLine);
+
+            DataRow dr = file.dt.NewRow();   //建立新的Rows
+            dr["TX"] = BitConverter.ToString(buffer).Replace("-", " ");
+            dr["RX"] = BitConverter.ToString(Receive_Buffer).Replace("-", " ");
+            dr["RESULT"] = "TRUE";
+            file.dt.Rows.Add(dr);
+
+            file.SaveCsv(file.dt, file.GetFileName());
+
             Correct_Times++;
             Correct_Count_TextBox.Text = Correct_Times.ToString();
             Temp_Receive_Buffer = new Byte[1024];
@@ -217,6 +249,15 @@ namespace Modbus_Test
             Error_TextBox.AppendText(BitConverter.ToString(Receive_Buffer).Replace("-", " "));
             Error_TextBox.AppendText(Environment.NewLine);
             Error_TextBox.ForeColor = Color.Red;
+
+            DataRow dr = file.dt.NewRow();   //建立新的Rows
+            dr["TX"] = BitConverter.ToString(buffer).Replace("-", " ");
+            dr["RX"] = BitConverter.ToString(Receive_Buffer).Replace("-", " ");
+            dr["RESULT"] = "FALSE";
+            file.dt.Rows.Add(dr);
+
+            file.SaveCsv(file.dt, file.GetFileName());
+
             Error_Times++;
             Error_Count_TextBox.Text = Error_Times.ToString();
             Temp_Receive_Buffer = new Byte[1024];

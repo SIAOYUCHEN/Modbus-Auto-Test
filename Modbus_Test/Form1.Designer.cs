@@ -45,7 +45,6 @@
             this.Error_Count_TextBox = new System.Windows.Forms.TextBox();
             this.Total_Count_TextBox = new System.Windows.Forms.TextBox();
             this.Correct_Count_TextBox = new System.Windows.Forms.TextBox();
-            this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -220,7 +219,6 @@
         private System.Windows.Forms.TextBox Error_Count_TextBox;
         private System.Windows.Forms.TextBox Total_Count_TextBox;
         private System.Windows.Forms.TextBox Correct_Count_TextBox;
-        private System.Windows.Forms.Timer timer3;
     }
 }
 
