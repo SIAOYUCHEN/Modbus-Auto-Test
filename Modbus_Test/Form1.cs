@@ -16,8 +16,8 @@ namespace Modbus_Test
     public partial class Form1 : Form
     {
         String[] PortNames;
-        //Byte[] buffer = { 0x01, 0x04, 0x00, 0x03, 0x00, 0x01, 0xC1, 0xCA};
-        Byte[] buffer;
+        Byte[] buffer = { 0x01, 0x04, 0x00, 0x00, 0x00, 0x01, 0x31, 0xCA};
+        //Byte[] buffer;
         Boolean Is_Need_Receive = false;
         Int32 Timeout_Count = 0;
         Int32 Temp_Receive_Length = 0, Receive_Length = 0;
@@ -70,7 +70,7 @@ namespace Modbus_Test
         {
             Modbus_Serial.Dispose();
             Modbus_Serial.Open();
-            buffer = modbus.GetTransmit();
+            //buffer = modbus.GetTransmit();
             Modbus_Serial.Write(buffer, 0, buffer.Length);
             Enable_Timer2();
             Is_Need_Receive = true;
@@ -144,12 +144,12 @@ namespace Modbus_Test
             Int16 j = 0;
             Int32 length = 0;
             Byte[] Receive_Buffer = new Byte[256];
-            
+            /*
             if (Is_Need_Receive == true)
             {
                 if (Modbus_Serial.IsOpen)
-                {
-                    Thread.Sleep(Convert.ToInt16(Receive_Length * 1.5));// Convert.ToInt16(Receive_Length * 1.5)
+                {*/
+                    Thread.Sleep(Convert.ToInt16(Receive_Length * 1.5));
                     length = Modbus_Serial.Read(Receive_Buffer, 0, Receive_Buffer.Length);
                     j = 0;
                     for (int i = Temp_Receive_Length; i < Temp_Receive_Length + length; i++)// Temp_Receive_Length + length
@@ -160,44 +160,52 @@ namespace Modbus_Test
                     }
 
                     Temp_Receive_Length += length;
-                    
-                    if (Temp_Receive_Length == Receive_Length)// Temp_Receive_Length == Receive_Length
-                    {
-                        if (modbus.GetCrcEqual(ref Temp_Receive_Buffer, Temp_Receive_Buffer.Length - modbus.Temp_Receive_Buffer_Offest,
-                                           Temp_Receive_Buffer[Temp_Receive_Buffer.Length - modbus.Temp_Receive_Buffer_Crc_Offest2],
-                                           Temp_Receive_Buffer[Temp_Receive_Buffer.Length - modbus.Temp_Receive_Buffer_Crc_Offest1]) == true)
-                        {
-                                Array.Resize(ref Temp_Receive_Buffer, Temp_Receive_Length);// 傳入矩陣位址
-                                Display receive_result = new Display(DisplayText);
-                                this.Invoke(receive_result, new Object[] { Temp_Receive_Buffer });
-                                Clear_Timer2_Parameter();
-                        }
-                    }
-                   else if (Temp_Receive_Length == modbus.Modbus_Error_Length)// Temp_Receive_Length == modbus.Modbus_Error_Length
-                    {
-                       if (modbus.GetCrcEqual(ref Temp_Receive_Buffer, Temp_Receive_Length - modbus.Temp_Receive_Buffer_Offest,
-                                          Temp_Receive_Buffer[Temp_Receive_Length - modbus.Temp_Receive_Buffer_Crc_Offest2],
-                                          Temp_Receive_Buffer[Temp_Receive_Length - modbus.Temp_Receive_Buffer_Crc_Offest1]) == true)
-                       {
-                         Array.Resize(ref Temp_Receive_Buffer, Temp_Receive_Length);// 傳入矩陣位址
-                         Display receive_result = new Display(DisplayText);
-                         this.Invoke(receive_result, new Object[] { Temp_Receive_Buffer });
-                         Clear_Timer2_Parameter();
-                       }
-                   }
-                   else
+            /*
+            if (Temp_Receive_Length == Receive_Length)
+            {
+                if (modbus.GetCrcEqual(ref Temp_Receive_Buffer, Temp_Receive_Buffer.Length - modbus.Temp_Receive_Buffer_Offest,
+                                   Temp_Receive_Buffer[Temp_Receive_Buffer.Length - modbus.Temp_Receive_Buffer_Crc_Offest2],
+                                   Temp_Receive_Buffer[Temp_Receive_Buffer.Length - modbus.Temp_Receive_Buffer_Crc_Offest1]) == true)
+                {
+                        Array.Resize(ref Temp_Receive_Buffer, Temp_Receive_Length);// 傳入矩陣位址
+                        Display receive_result = new Display(DisplayText);
+                        this.Invoke(receive_result, new Object[] { Temp_Receive_Buffer });
+                        Clear_Timer2_Parameter();
+                }
+            }
+           else if (Temp_Receive_Length == modbus.Modbus_Error_Length)
+            {
+               if (modbus.GetCrcEqual(ref Temp_Receive_Buffer, Temp_Receive_Length - modbus.Temp_Receive_Buffer_Offest,
+                                  Temp_Receive_Buffer[Temp_Receive_Length - modbus.Temp_Receive_Buffer_Crc_Offest2],
+                                  Temp_Receive_Buffer[Temp_Receive_Length - modbus.Temp_Receive_Buffer_Crc_Offest1]) == true)
+               {
+                 Array.Resize(ref Temp_Receive_Buffer, Temp_Receive_Length);// 傳入矩陣位址
+                 Display receive_result = new Display(DisplayText);
+                 this.Invoke(receive_result, new Object[] { Temp_Receive_Buffer });
+                 Clear_Timer2_Parameter();
+               }
+           }*/
+            if (Temp_Receive_Length == Receive_Length || Temp_Receive_Length == modbus.Modbus_Error_Length)
+            {
+               
+                    Array.Resize(ref Temp_Receive_Buffer, Temp_Receive_Length);// 傳入矩陣位址
+                    Display receive_result = new Display(DisplayText);
+                    this.Invoke(receive_result, new Object[] { Temp_Receive_Buffer });
+                    Clear_Timer2_Parameter();
+            }
+            else
                    {
                         Array.Resize(ref Temp_Receive_Buffer, Temp_Receive_Length);// 傳入矩陣位址
                         Display receive_result = new Display(Display_Error_Text);
                         this.Invoke(receive_result, new Object[] { Temp_Receive_Buffer });
                         Clear_Timer2_Parameter();
-                    }
+                    }/*
                 }
-            }
+            }*/
         }
 
         private void DisplayText(Byte[] Receive_Buffer)
-        {
+        {/*
             if (Temp_Receive_Buffer.Length != modbus.Modbus_Error_Length)
             {
                 if (Temp_Receive_Buffer[modbus.Modbus_Id_Index] == buffer[modbus.Modbus_Id_Index])
@@ -212,6 +220,26 @@ namespace Modbus_Test
             else
             {
                 Display_Error_Text(Receive_Buffer);
+            }*/
+            if (modbus.GetCrcEqual(ref Receive_Buffer, Temp_Receive_Length - modbus.Temp_Receive_Buffer_Offest,
+                                  Receive_Buffer[Temp_Receive_Length - modbus.Temp_Receive_Buffer_Crc_Offest2],
+                                  Receive_Buffer[Temp_Receive_Length - modbus.Temp_Receive_Buffer_Crc_Offest1]) == true)
+            {
+                if (Temp_Receive_Buffer.Length != modbus.Modbus_Error_Length)
+                {
+                    if (Temp_Receive_Buffer[modbus.Modbus_Id_Index] == buffer[modbus.Modbus_Id_Index])
+                    {
+                        Display_Correct_Text(Receive_Buffer);
+                    }
+                    else
+                    {
+                        Display_Error_Text(Receive_Buffer);
+                    }
+                }
+                else
+                {
+                    Display_Error_Text(Receive_Buffer);
+                }
             }
         }
 

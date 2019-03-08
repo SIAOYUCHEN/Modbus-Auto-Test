@@ -21,7 +21,7 @@ namespace Modbus_Test
         public int Modbus_FuctionCode6 = 6;
         public int Modbus_FuctionCode16 = 16;
         public int Modbus_Error_Length = 5;
-        public int Modbus_Timeout = 34;// 100ms 34
+        public int Modbus_Timeout = 40;// 100ms 34
 
         public int Temp_Receive_Buffer_Crc_Offest1 = 1;
         public int Temp_Receive_Buffer_Crc_Offest2 = 2;
@@ -48,7 +48,7 @@ namespace Modbus_Test
         {
             Byte[] context = new Byte[1024];
             Random data1 = new Random();
-            context[0] = Convert.ToByte(data1.Next(0,2));
+            context[0] = Convert.ToByte(data1.Next(1,2));
             if (context[0] != Modbus_BroadC0ast)
             {
                 context[1] = Modbus_Reference_FunctionCode[data1.Next(0, Modbus_Reference_FunctionCode.Length)];
@@ -94,12 +94,11 @@ namespace Modbus_Test
                 }
                 else if (context[Modbus_FunctionCode_Index] == FuctionCode16)
                 {
-                    int temp = data1.Next(0, 100);
                     int temp_length = data1.Next(2, 5);
                     if (temp_length == 2)
                     {
                         context[2] = 0x00;
-                        context[3] = Convert.ToByte(temp);
+                        context[3] = Modbus_Reference_FunctionCode3_Address[data1.Next(0, Modbus_Reference_FunctionCode3_Address.Length)];
                         context[4] = 0x00;
                         context[5] = Convert.ToByte(temp_length);
                         context[6] = Convert.ToByte(temp_length * 2);
@@ -115,7 +114,7 @@ namespace Modbus_Test
                     else if (temp_length == 3)
                     {
                         context[2] = 0x00;
-                        context[3] = Convert.ToByte(temp);
+                        context[3] = Modbus_Reference_FunctionCode3_Address[data1.Next(0, Modbus_Reference_FunctionCode3_Address.Length)];
                         context[4] = 0x00;
                         context[5] = Convert.ToByte(temp_length);
                         context[6] = Convert.ToByte(temp_length * 2);
@@ -133,7 +132,7 @@ namespace Modbus_Test
                     else if (temp_length == 4)
                     {
                         context[2] = 0x00;
-                        context[3] = Convert.ToByte(temp);
+                        context[3] = Modbus_Reference_FunctionCode3_Address[data1.Next(0, Modbus_Reference_FunctionCode3_Address.Length)];
                         context[4] = 0x00;
                         context[5] = Convert.ToByte(temp_length);
                         context[6] = Convert.ToByte(temp_length * 2);
@@ -175,12 +174,11 @@ namespace Modbus_Test
                 }
                 else if (context[Modbus_FunctionCode_Index] == FuctionCode16)
                 {
-                    int temp = data1.Next(0, 100);
                     int temp_length = data1.Next(2, 5);
                     if (temp_length == 2)
                     {
                         context[2] = 0x00;
-                        context[3] = Convert.ToByte(temp);
+                        context[3] = Modbus_Reference_FunctionCode3_Address[data1.Next(0, Modbus_Reference_FunctionCode3_Address.Length)];
                         context[4] = 0x00;
                         context[5] = Convert.ToByte(temp_length);
                         context[6] = Convert.ToByte(temp_length * 2);
@@ -196,7 +194,7 @@ namespace Modbus_Test
                     else if (temp_length == 3)
                     {
                         context[2] = 0x00;
-                        context[3] = Convert.ToByte(temp);
+                        context[3] = Modbus_Reference_FunctionCode3_Address[data1.Next(0, Modbus_Reference_FunctionCode3_Address.Length)];
                         context[4] = 0x00;
                         context[5] = Convert.ToByte(temp_length);
                         context[6] = Convert.ToByte(temp_length * 2);
@@ -214,7 +212,7 @@ namespace Modbus_Test
                     else if (temp_length == 4)
                     {
                         context[2] = 0x00;
-                        context[3] = Convert.ToByte(temp);
+                        context[3] = Modbus_Reference_FunctionCode3_Address[data1.Next(0, Modbus_Reference_FunctionCode3_Address.Length)];
                         context[4] = 0x00;
                         context[5] = Convert.ToByte(temp_length);
                         context[6] = Convert.ToByte(temp_length * 2);
