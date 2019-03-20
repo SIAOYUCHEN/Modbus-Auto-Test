@@ -21,16 +21,16 @@ namespace Modbus_Test
         public int Modbus_FuctionCode6 = 6;
         public int Modbus_FuctionCode16 = 16;
         public int Modbus_Error_Length = 5;
-        public int Modbus_Timeout = 40;// 100ms 34
+        public int Modbus_Timeout = 34;// 100ms 34
 
         public int Temp_Receive_Buffer_Crc_Offest1 = 1;
         public int Temp_Receive_Buffer_Crc_Offest2 = 2;
         public int Temp_Receive_Buffer_Offest = 2;
 
-        private const int FuctionCode3 = 3;
-        private const int FuctionCode4 = 4;
-        private const int FuctionCode6 = 6;
-        private const int FuctionCode16 = 16;
+        public const int FuctionCode3 = 3;
+        public const int FuctionCode4 = 4;
+        public const int FuctionCode6 = 6;
+        public const int FuctionCode16 = 16;
 
         private int crc_high = 0, crc_low = 0;
 

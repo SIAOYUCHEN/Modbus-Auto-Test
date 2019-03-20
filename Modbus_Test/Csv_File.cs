@@ -71,7 +71,7 @@ namespace Modbus_Test
         public string GetFileName()
         {
             TimeSpan span = DateTime.Now - LastTime;
-            if(span.TotalHours > 8)
+            if(span.TotalHours > 6)
             {
                 LastTime = DateTime.Now;
                 dt.Clear();
