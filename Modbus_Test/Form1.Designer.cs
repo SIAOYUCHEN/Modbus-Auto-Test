@@ -31,14 +31,12 @@
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.Serial_Button = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.Timer_Start_Button = new System.Windows.Forms.Button();
             this.Timer_Close_Button = new System.Windows.Forms.Button();
             this.Modbus_Serial = new System.IO.Ports.SerialPort(this.components);
             this.Total_TextBox = new System.Windows.Forms.TextBox();
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.Correct_TextBox = new System.Windows.Forms.TextBox();
             this.Error_TextBox = new System.Windows.Forms.TextBox();
             this.TimeOut_Count_TextBox = new System.Windows.Forms.TextBox();
@@ -64,11 +62,6 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 20);
             this.comboBox1.TabIndex = 1;
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Serial_Button
             // 
@@ -122,11 +115,6 @@
             this.Total_TextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.Total_TextBox.Size = new System.Drawing.Size(261, 142);
             this.Total_TextBox.TabIndex = 6;
-            // 
-            // timer2
-            // 
-            this.timer2.Interval = 10;
-            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // Correct_TextBox
             // 
@@ -205,14 +193,12 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button Serial_Button;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button Timer_Start_Button;
         private System.Windows.Forms.Button Timer_Close_Button;
         private System.IO.Ports.SerialPort Modbus_Serial;
         private System.Windows.Forms.TextBox Total_TextBox;
-        private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.TextBox Correct_TextBox;
         private System.Windows.Forms.TextBox Error_TextBox;
         private System.Windows.Forms.TextBox TimeOut_Count_TextBox;
