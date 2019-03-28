@@ -19,7 +19,7 @@ namespace Modbus_Test
             {
                 string data = "";
                 FileInfo fi = new FileInfo(filepath);
-                if(!fi.Directory.Exists)
+                if (!fi.Directory.Exists)
                 {
                     fi.Directory.Create();
                 }
@@ -71,15 +71,15 @@ namespace Modbus_Test
         public string GetFileName()
         {
             TimeSpan span = DateTime.Now - LastTime;
-            if(span.TotalHours > 6)
+            if (span.TotalHours > 6)
             {
                 LastTime = DateTime.Now;
                 dt.Clear();
-                return "D:\\" + DateTime.Now.ToString("yyyy_MM_dd_HH") + ".csv";
+                return "D:/data/" + DateTime.Now.ToString("yyyy_MM_dd_HH") + ".csv";
             }
             else
             {
-                return "D:\\" + LastTime.ToString("yyyy_MM_dd_HH") + ".csv";
+                return "D:/data/" + LastTime.ToString("yyyy_MM_dd_HH") + ".csv";
             }
         }
     }

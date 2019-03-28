@@ -21,7 +21,7 @@ namespace Modbus_Test
         String[] PortNames;
         //Byte[] buffer = { 0x01, 0x04, 0x00, 0x02, 0x00, 0x01, 0x90, 0x0A};
         Byte[] buffer;
-        Boolean Timeout_Flag = true, Mutex_Flag = false;
+        Boolean Timeout_Flag = true;
         Int32 Temp_Receive_Length = 0, Receive_Length = 0;
         Int32 TimeOut_Error_Times = 0, Error_Times = 0, Total_Times = 0, Correct_Times = 0;
         Byte[] Temp_Receive_Buffer = new Byte[1024];
@@ -98,7 +98,7 @@ namespace Modbus_Test
 
                 Display_SendData receive_result = new Display_SendData(Display_Total_Text);
                 this.Invoke(receive_result);
-                Timeout_Timer = new System.Threading.Timer(this.Timeout_Timer_Tick, null, 100, 100);
+                Timeout_Timer = new System.Threading.Timer(this.Timeout_Timer_Tick, null, modbus.Modbus_Timeout, modbus.Modbus_Timeout);
 
             }
             catch
@@ -114,38 +114,30 @@ namespace Modbus_Test
             if (Timeout_Flag == false)
             {
                 Timeout_Flag = true;
-                //Disable_Timeout_Timer();
             }
             else
             {
-                Mutex_Flag = true;
-                if (buffer[modbus.Modbus_Id_Index] != 0)
+                if (Modbus_Serial.BytesToRead > 0)
                 {
-                    Display_SendData receive_result = new Display_SendData(Display_Timeout_Error_Text);
-                    this.Invoke(receive_result);
-                    /*
-                    DataRow dr = file.dt.NewRow();   //建立新的Rows
-                    dr["TX"] = BitConverter.ToString(buffer).Replace("-", " ");
-                    dr["RESULT"] = "FALSE";
-                    file.dt.Rows.Add(dr);
-                    file.SaveCsv(file.dt, file.GetFileName());*/
-                    Save_Data(true, false, (Byte[])null);// broacst result
-                    //Disable_Timeout_Timer();
+                    
                 }
-                else if (buffer[modbus.Modbus_Id_Index] == 0)
+                else
                 {
-                    Display_SendData receive_result = new Display_SendData(Display_Timeout_Correct_Text);
-                    this.Invoke(receive_result);
-                    /*
-                    DataRow dr = file.dt.NewRow();   //建立新的Rows
-                    dr["TX"] = BitConverter.ToString(buffer).Replace("-", " ");
-                    dr["RESULT"] = "TRUE";
-                    file.dt.Rows.Add(dr);
-                    file.SaveCsv(file.dt, file.GetFileName());*/
-                    Save_Data(true, true, (Byte[])null);// broacst result
-                    //Disable_Timeout_Timer();
+                    if (buffer[modbus.Modbus_Id_Index] != 0)
+                    {
+                        Display_SendData receive_result = new Display_SendData(Display_Timeout_Error_Text);
+                        this.Invoke(receive_result);
+
+                        Save_Data(true, false, (Byte[])null);// broacst result
+                    }
+                    else if (buffer[modbus.Modbus_Id_Index] == 0)
+                    {
+                        Display_SendData receive_result = new Display_SendData(Display_Timeout_Correct_Text);
+                        this.Invoke(receive_result);
+
+                        Save_Data(true, true, (Byte[])null);// broacst result
+                    }
                 }
-                //file.SaveCsv(file.dt, file.GetFileName());
             }
             Disable_Timeout_Timer();
         }
@@ -177,24 +169,14 @@ namespace Modbus_Test
                     if (Temp_Receive_Length == Receive_Length || Temp_Receive_Length == modbus.Modbus_Error_Length)
                     {
                         Timeout_Flag = false;
-                        if (Mutex_Flag != true)
-                        {
-                            Array.Resize(ref Temp_Receive_Buffer, Temp_Receive_Length);// 傳入矩陣位址
-                            Display receive_result = new Display(DisplayText);
-                            this.Invoke(receive_result, new Object[] { Temp_Receive_Buffer });
 
-                        }
-                        else
-                        {
-                            Mutex_Flag = false;
-                            Temp_Receive_Length = 0;
-                            Temp_Receive_Buffer = new Byte[1024];
-                        }
+                        Array.Resize(ref Temp_Receive_Buffer, Temp_Receive_Length);// 傳入矩陣位址
+                        Display receive_result = new Display(DisplayText);
+                        this.Invoke(receive_result, new Object[] { Temp_Receive_Buffer });
                     }
                     else
                     {
                         Timeout_Flag = false;
-                        Mutex_Flag = false;
                         Temp_Receive_Length = 0;
                     }
                 }
@@ -240,14 +222,7 @@ namespace Modbus_Test
             Correct_TextBox.AppendText("Rx: ");
             Correct_TextBox.AppendText(BitConverter.ToString(Receive_Buffer).Replace("-", " "));
             Correct_TextBox.AppendText(Environment.NewLine);
-            /*
-            DataRow dr = file.dt.NewRow();   //建立新的Rows
-            dr["TX"] = BitConverter.ToString(buffer).Replace("-", " ");
-            dr["RX"] = BitConverter.ToString(Receive_Buffer).Replace("-", " ");
-            dr["RESULT"] = "TRUE";
-            file.dt.Rows.Add(dr);
-
-            file.SaveCsv(file.dt, file.GetFileName());*/
+            
             Save_Data(false,true, Receive_Buffer);// broacst result
 
             Correct_Times++;
@@ -264,14 +239,7 @@ namespace Modbus_Test
             Error_TextBox.AppendText(BitConverter.ToString(Receive_Buffer).Replace("-", " "));
             Error_TextBox.AppendText(Environment.NewLine);
             Error_TextBox.ForeColor = Color.Red;
-            /*
-            DataRow dr = file.dt.NewRow();   //建立新的Rows
-            dr["TX"] = BitConverter.ToString(buffer).Replace("-", " ");
-            dr["RX"] = BitConverter.ToString(Receive_Buffer).Replace("-", " ");
-            dr["RESULT"] = "FALSE";
-            file.dt.Rows.Add(dr);
-
-            file.SaveCsv(file.dt, file.GetFileName());*/
+            
             Save_Data(false, false, Receive_Buffer);// broacst result
 
             Error_Times++;

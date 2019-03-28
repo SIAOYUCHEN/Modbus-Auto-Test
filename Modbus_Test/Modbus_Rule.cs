@@ -21,7 +21,7 @@ namespace Modbus_Test
         public int Modbus_FuctionCode6 = 6;
         public int Modbus_FuctionCode16 = 16;
         public int Modbus_Error_Length = 5;
-        public int Modbus_Timeout = 34;// 100ms 34
+        public int Modbus_Timeout = 100;// 100ms 34
 
         public int Temp_Receive_Buffer_Crc_Offest1 = 1;
         public int Temp_Receive_Buffer_Crc_Offest2 = 2;
